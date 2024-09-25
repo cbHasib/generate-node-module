@@ -1,4 +1,4 @@
-# **Generate Express Module**
+# **Generate Node Module**
 
 A command-line tool (CLI) for quickly scaffolding an Express.js module, generating basic TypeScript files with boilerplate code for controllers, services, routes, interfaces, constants, and validations.
 
@@ -7,7 +7,7 @@ A command-line tool (CLI) for quickly scaffolding an Express.js module, generati
 To install the package globally, run the following command:
 
 ```bash
-npm install -g generate-express-module
+npm install -g generate-node-module
 ```
 
 This allows you to run the `generate-module` command from anywhere on your system.

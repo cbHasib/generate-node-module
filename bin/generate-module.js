@@ -4,15 +4,7 @@ const fs = require('fs-extra');
 const path = require('path');
 
 const generateModule = (moduleName) => {
-  const folderPath = path.join(process.cwd(), moduleName);
-  // import express from 'express';
-
-  // const router = express.Router();
-  
-  // router.get('/');
-  
-  // export const SubscriptionRoutes = router;
-  
+  const folderPath = path.join(process.cwd(), moduleName);  
 
   const files = {
     [`${moduleName}.constant.ts`]: `export const ${capitalize(moduleName)}Constants = {};`,
