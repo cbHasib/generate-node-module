@@ -23,7 +23,7 @@ export const ${capitalize(moduleName)}Routes = router;`,
 
 const ${capitalize(moduleName)}Schema = new mongoose.Schema({});
    
-export const ${capitalize(moduleName)}Model = mongoose.model('${moduleName}', ${capitalize(moduleName)}Schema);`,
+export const ${capitalize(moduleName)}Model = mongoose.model('${capitalize(moduleName)}', ${capitalize(moduleName)}Schema);`,
     [`${moduleName}.utils.ts`]: `export const ${capitalize(moduleName)}Utils = {};`,
   };
 
