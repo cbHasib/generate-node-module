@@ -28,8 +28,54 @@ const generateModule = (moduleName) => {
   const files = {
     [`${moduleName}.constant.ts`]: `export const ${capitalize(moduleNameOnly)}Constants = {};`,
     [`${moduleName}.interface.ts`]: `export interface I${capitalize(moduleNameOnly)} {}`,
-    [`${moduleName}.controller.ts`]: `export const ${capitalize(moduleNameOnly)}Controller = {};`,
-    [`${moduleName}.services.ts`]: `export const ${capitalize(moduleNameOnly)}Service = {};`,
+    [`${moduleName}.controller.ts`]: `import { Request, RequestHandler, Response } from "express";
+import catchAsync from "../../utils/catchAsync";
+import { ${capitalize(moduleNameOnly)}Service } from "./${moduleName}.services";
+import sendResponse from "../../utils/sendResponse";
+import httpStatus from "http-status";
+
+const get${capitalize(moduleNameOnly)}s: RequestHandler = catchAsync(
+    async (req: Request, res: Response) => {
+        const data = await ${capitalize(moduleNameOnly)}Service.get${capitalize(moduleNameOnly)}(req.query);
+
+        sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: "${capitalize(moduleNameOnly)} fetched successfully",
+            data: data,
+        });
+    }
+);
+    export const ${capitalize(moduleNameOnly)}Controller = {
+        get${capitalize(moduleNameOnly)}s,
+    };`,
+    [`${moduleName}.services.ts`]: `import QueryBuilder from "../../builder/QueryBuilder";
+    import { ${capitalize(moduleNameOnly)}Model } from "./${moduleName}.model";
+    
+    const get${capitalize(moduleNameOnly)}s = async (query: Record<string, unknown>) => {
+        const queryModel = new QueryBuilder(
+            ${capitalize(moduleNameOnly)}Model.find({ }), // Initial
+            query
+        )
+            .search(['name']) // Search by name. add more fields if needed
+            .filter()
+            .sort()
+            .paginate()
+            .fields();
+    
+        const queryPromise = queryModel.modelQuery;
+        const metaPromise = queryModel.getMeta();
+    
+        const [data, metaResult] = await Promise.all([queryPromise, metaPromise]);
+    
+        return {
+            data: data,
+            meta: metaResult,
+        };
+    }
+    export const ${capitalize(moduleNameOnly)}Service = {
+        get${capitalize(moduleNameOnly)}s,
+    };`,
     [`${moduleName}.routes.ts`]: `import express from 'express'; 
 import { ${capitalize(moduleNameOnly)}Controller } from './${moduleName}.controller';
 const router = express.Router(); 
