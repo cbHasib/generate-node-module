@@ -4,27 +4,76 @@ const fs = require('fs-extra');
 const path = require('path');
 
 const generateModule = (moduleName) => {
-  const folderPath = path.join(process.cwd(), moduleName);  
+  const folderPath = path.join(process.cwd(), moduleName);
+
+  // handle if the module already exists
+  if (fs.existsSync(folderPath)) {
+    console.error(`Module ${moduleName} already exists.`);
+    process.exit(1);
+  }
+
+  // handle if the module name is having spaces or hyphens. make it camel case
+  const moduleNameParts = moduleName.split(/[\s-]+/);
+  let moduleNameOnly = capitalize(moduleNameParts[0]);
+  if (moduleNameParts.length > 1) {
+    moduleNameOnly = moduleNameParts
+      .map((part) => capitalize(part))
+      .join('');
+
+    console.log(`Module name converted to ${moduleName}`);
+  }
+
+
 
   const files = {
-    [`${moduleName}.constant.ts`]: `export const ${capitalize(moduleName)}Constants = {};`,
-    [`${moduleName}.interface.ts`]: `export interface ${capitalize(moduleName)}Interface {}`,
-    [`${moduleName}.controller.ts`]: `export const ${capitalize(moduleName)}Controller = {};`,
-    [`${moduleName}.services.ts`]: `export const ${capitalize(moduleName)}Service = {};`,
+    [`${moduleName}.constant.ts`]: `export const ${capitalize(moduleNameOnly)}Constants = {};`,
+    [`${moduleName}.interface.ts`]: `export interface I${capitalize(moduleNameOnly)} {}`,
+    [`${moduleName}.controller.ts`]: `export const ${capitalize(moduleNameOnly)}Controller = {};`,
+    [`${moduleName}.services.ts`]: `export const ${capitalize(moduleNameOnly)}Service = {};`,
     [`${moduleName}.routes.ts`]: `import express from 'express'; 
     
 const router = express.Router(); 
+
+router.get(
+'/',
+${capitalize(moduleNameOnly)}Controller.get${capitalize(moduleNameOnly)}s
+); 
     
-router.get('/'); 
-    
-export const ${capitalize(moduleName)}Routes = router;`,
-    [`${moduleName}.validation.ts`]: `export const ${capitalize(moduleName)}Validation = {};`,
+export const ${capitalize(moduleNameOnly)}Routes = router;`,
+
+    [`${moduleName}.validation.ts`]: `
+    import { z } from 'zod';
+  
+    const ${moduleNameOnly}ZodSchema = z.object({
+      // Define the schema here
+      body: z.object({
+        // Define the body schema here
+      }),
+
+      params: z.object({
+        // Define the params schema here
+      }),
+
+      query: z.object({
+        // Define the query schema here
+      }),
+
+      headers: z.object({
+        // Define the headers schema here
+      }),
+    });
+
+    export const ${capitalize(moduleNameOnly)}Validation = {
+      // Define the validation functions here
+      ${moduleNameOnly}ZodSchema,
+    };
+    `,
     [`${moduleName}.model.ts`]: `import mongoose from 'mongoose';
 
-const ${capitalize(moduleName)}Schema = new mongoose.Schema({});
+const ${capitalize(moduleNameOnly)}Schema = new mongoose.Schema<I${capitalize(moduleNameOnly)}>({});
    
-export const ${capitalize(moduleName)}Model = mongoose.model('${capitalize(moduleName)}', ${capitalize(moduleName)}Schema);`,
-    [`${moduleName}.utils.ts`]: `export const ${capitalize(moduleName)}Utils = {};`,
+export const ${capitalize(moduleNameOnly)}Model = mongoose.model<I${capitalize(moduleNameOnly)}>('${capitalize(moduleNameOnly)}', ${capitalize(moduleNameOnly)}Schema);`,
+    [`${moduleName}.utils.ts`]: `export const ${capitalize(moduleNameOnly)}Utils = {};`,
   };
 
   fs.ensureDirSync(folderPath);
