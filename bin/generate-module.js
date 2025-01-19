@@ -31,7 +31,7 @@ const generateModule = (moduleName) => {
     [`${moduleName}.controller.ts`]: `export const ${capitalize(moduleNameOnly)}Controller = {};`,
     [`${moduleName}.services.ts`]: `export const ${capitalize(moduleNameOnly)}Service = {};`,
     [`${moduleName}.routes.ts`]: `import express from 'express'; 
-    
+import { ${capitalize(moduleNameOnly)}Controller } from './${moduleName}.controller';
 const router = express.Router(); 
 
 router.get(
@@ -69,7 +69,7 @@ export const ${capitalize(moduleNameOnly)}Routes = router;`,
     };
     `,
     [`${moduleName}.model.ts`]: `import mongoose from 'mongoose';
-
+import { I${capitalize(moduleNameOnly)} } from './${moduleName}.interface';
 const ${capitalize(moduleNameOnly)}Schema = new mongoose.Schema<I${capitalize(moduleNameOnly)}>({});
    
 export const ${capitalize(moduleNameOnly)}Model = mongoose.model<I${capitalize(moduleNameOnly)}>('${capitalize(moduleNameOnly)}', ${capitalize(moduleNameOnly)}Schema);`,
