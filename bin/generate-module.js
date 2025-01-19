@@ -36,7 +36,7 @@ import httpStatus from "http-status";
 
 const get${capitalize(moduleNameOnly)}s: RequestHandler = catchAsync(
     async (req: Request, res: Response) => {
-        const data = await ${capitalize(moduleNameOnly)}Service.get${capitalize(moduleNameOnly)}(req.query);
+        const data = await ${capitalize(moduleNameOnly)}Service.get${capitalize(moduleNameOnly)}s(req.query);
 
         sendResponse(res, {
             statusCode: httpStatus.OK,
