@@ -30,7 +30,7 @@ const generateModule = (moduleName) => {
     [`${moduleName}.interface.ts`]: `export interface I${capitalize(moduleNameOnly)} {}`,
     [`${moduleName}.controller.ts`]: `import { Request, RequestHandler, Response } from "express";
 import catchAsync from "../../utils/catchAsync";
-import { ${capitalize(moduleNameOnly)}Service } from "./${moduleName}.services";
+import { ${capitalize(moduleNameOnly)}Service } from "./${moduleName}.service";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 
