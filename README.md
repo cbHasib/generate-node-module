@@ -40,7 +40,7 @@ admin/
 ├── admin.interface.ts     # Defines interfaces for the module
 ├── admin.model.ts         # Contains the Mongoose schema and model
 ├── admin.route.ts         # Sets up the routes for the module
-├── admin.services.ts      # Service logic related to the module
+├── admin.service.ts       # Service logic related to the module
 ├── admin.utils.ts         # Utility functions related to the module
 └── admin.validation.ts    # Validation logic for request payloads
 ```

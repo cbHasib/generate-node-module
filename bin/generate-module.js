@@ -46,10 +46,11 @@ const get${capitalize(moduleNameOnly)}s: RequestHandler = catchAsync(
         });
     }
 );
+
     export const ${capitalize(moduleNameOnly)}Controller = {
         get${capitalize(moduleNameOnly)}s,
     };`,
-    [`${moduleName}.services.ts`]: `import QueryBuilder from "../../builder/QueryBuilder";
+    [`${moduleName}.service.ts`]: `import QueryBuilder from "../../utils/QueryBuilder";
     import { ${capitalize(moduleNameOnly)}Model } from "./${moduleName}.model";
     
     const get${capitalize(moduleNameOnly)}s = async (query: Record<string, unknown>) => {
@@ -73,6 +74,7 @@ const get${capitalize(moduleNameOnly)}s: RequestHandler = catchAsync(
             meta: metaResult,
         };
     }
+
     export const ${capitalize(moduleNameOnly)}Service = {
         get${capitalize(moduleNameOnly)}s,
     };`,
